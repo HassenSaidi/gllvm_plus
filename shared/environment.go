@@ -95,6 +95,9 @@ var LLVMbcGen []string
 // LLVMLtoLDFLAGS is the list of extra flags to pass to the linking steps, when under -flto
 var LLVMLtoLDFLAGS []string
 
+// GLLVMbuildProducts  is the file that captures all the build products to track build dependencies
+var GLLVMbuildProducts string
+
 const (
 	envpath    = "LLVM_COMPILER_PATH"
 	envcc      = "LLVM_CC_NAME"
@@ -116,6 +119,8 @@ const (
 	//iam: 10/11/2020 extra linking arguments to add to the linking step when we are doing
 	// link time optimization.
 	envltolink = "LTO_LINKING_FLAGS"
+	// build products file
+	envbuildproducts = "GLLVM_BUILD_PRODUCTS"
 )
 
 func init() {
@@ -155,6 +160,7 @@ func ResetEnvironment() {
 	LLVMLd = ""
 	LLVMbcGen = []string{}
 	LLVMLtoLDFLAGS = []string{}
+	GLLVMbuildProducts = ""
 }
 
 // FetchEnvironment is used in initializing our globals, it is also used in testing
@@ -178,4 +184,6 @@ func FetchEnvironment() {
 
 	LLVMbcGen = strings.Fields(os.Getenv(envbcgen))
 	LLVMLtoLDFLAGS = strings.Fields(os.Getenv(envltolink))
+
+	GLLVMbuildProducts = os.Getenv(envbuildproducts)
 }
